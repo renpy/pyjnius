@@ -25,8 +25,14 @@ install_requires = []
 # detect Python for android
 platform = sys.platform
 ndkplatform = environ.get('NDKPLATFORM')
+
 if ndkplatform is not None and environ.get('LIBLINK'):
-    platform = 'android'
+    sdl_version = int(environ.get('PYJNIUS_SDL_VERSION', 1))
+
+    if sdl_version == 2:
+        platform = 'android_sdl2'
+    else:
+        platform = 'android'
 
 # detect cython
 try:
@@ -34,15 +40,19 @@ try:
     install_requires.append('cython')
 except ImportError:
     from distutils.command.build_ext import build_ext
-    if platform != 'android':
+    if platform != 'android' and platform != "android_sdl2":
         print('\n\nYou need Cython to compile Pyjnius.\n\n')
         raise
     files = [fn[:-3] + 'c' for fn in files if fn.endswith('pyx')]
 
 if platform == 'android':
-    # for android, we use SDL...
     libraries = ['sdl', 'log']
     library_dirs = ['libs/' + environ['ARCH']]
+
+elif platform == 'android_sdl2':
+    libraries = ['SDL2', 'log']
+    library_dirs = ['libs/' + environ['ARCH']]
+
 elif platform == 'darwin':
     import objc
     framework = objc.pathForFramework('JavaVM.framework')
