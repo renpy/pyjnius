@@ -99,7 +99,7 @@ include "config.pxi"
 
 IF JNIUS_PLATFORM == "android":
     include "jnius_jvm_android.pxi"
-ELIF JNIUS_PLATFORM == "android":
+ELIF JNIUS_PLATFORM == "android_sdl2":
     include "jnius_jvm_android_sdl2.pxi"
 ELSE:
     include "jnius_jvm_desktop.pxi"

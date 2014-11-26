@@ -2,4 +2,4 @@
 cdef extern void *SDL_AndroidGetJNIEnv()
 
 cdef JNIEnv *get_platform_jnienv():
-    return <JNIEnv *> SDL_ANDROID_GetJNIEnv()
+    return <JNIEnv *> SDL_AndroidGetJNIEnv()
